@@ -1,78 +1,123 @@
-#include<iostream>
-#include<cmath>
+//CHECKING
+//       1VARIANT
+//SIZE - 8
+//START ARRAY - 20 33 87 91 2 74 95 12
+//ARR FROM NEXT OF KRAT MIN PO VOZR - 33 74 95
+//ARR FROM NOT KRAT MIN - 33 87 91 95
+//
+//      2 VARIANT
+//SIZE - 11
+//START ARRAY -44 3 21 7 5 74 90 99 37 24 6
+//ARR FROM NEXT OF KRAT MIN PO VOZR - 6 7 21 37 99
+//ARR FROM NOT KRAT MIN -44 7 5 74 37
+//
+//      3 VARIANT
+//SIZE - 6
+//START ARRAY - 104 238 21 8 5 2
+//ARR FROM NEXT OF KRAT MIN PO VOZR - 5 21 238
+//ARR FROM NOT KRAT MIN - 21 5
+#include <iostream>
 
 using namespace std;
 
+void clearscr();
+int *InitArray(int n);
+void DisplayArray(int *a, int n);
+int FindKrat(int *a, int n, int *newarr, int *delarr);
+void Sort (int *newarr, int t);
 
-class Complex
-{
-public:
-	Complex()
-	{
-		real = 0; imaginary = 1;
-	}
-	Complex(double re, double im)
-	{
-		SetComplex(re, im);
-	}
-	void SetComplex(double re, double im)
-	{
-		real = re; imaginary = im;
-	}
-	Complex Add(Complex z1)
-	{
-		Complex z2;
-		z2.real = real + z1.real;
-		z2.imaginary = imaginary + z1.imaginary;
-		return z2;
-	}
-	Complex Subtract(Complex z1)
-	{
-		Complex z2;
-		z2.real = real - z1.real;
-		z2.imaginary = imaginary - z1.imaginary;
-		return z2;
-	}
-	double Radius()
-	{
-		return sqrt(real*real + imaginary*imaginary);
-	}
-	void Display()
-	{
-
-		if (imaginary < 0)
-			cout << real << imaginary << "i" << endl;
-		if (imaginary == -1)
-			cout << real << "-i"<< endl;
-		if (imaginary == 0)
-			cout << real <<  endl;
-		if (imaginary == 1)
-			cout << real << "+i" << endl;
-		else
-		cout << real << "+" << imaginary << "i" << endl;
-	}
-
-private:
-	double real, imaginary;
-};
+int t = 0;
+int f = 0;
 
 int main()
 {
-	Complex z1, z2, z3;
-	z1.SetComplex(2, -1);
-	z2.SetComplex(3, 1);
-	z1.Display();
-	z2.Display();
-	z3 = z1.Add(z2);
-	z3.Display();
-	Complex zArray[5];
-	for (int i = 0; i < 5; i++)
-		cout << zArray[i].Radius() << endl;
-	Complex *zPointer = &z1;
-	zPointer->SetComplex(3, 5);
-	Complex*zA = new Complex[10];
-	zA[4].SetComplex(5, -2);
-	return 0;
+    cout << "Please, enter a size of your array" << endl;
+    int n;
+    cin >> n;
+    clearscr();
+    int *myarr = InitArray(n);
+    clearscr();
+    cout << "Your array: ";
+    DisplayArray(myarr, n);
+    cout << endl;
+    clearscr();
 
+    int* newarr=new int[n];
+    int* delarr=new int[n];
+    FindKrat(myarr, n, newarr, delarr);
+    //for(int i=0; i<t; i++)
+        //cout << newarr[i] << " ";
+    //cout << endl;
+    Sort (newarr, t);
+    cout << "New Array 1: ";
+    for(int i=0; i<t; i++)
+        cout << newarr[i] << " ";
+    cout << endl;
 
+    cout << "New Array 2: ";
+    for(int i=0; i<f; i++)
+        cout << delarr[i] << " ";
+    cout << endl;
+    return 0;
 }
+
+void clearscr()
+{
+    for(int i=0; i<30; ++i)
+    cout << "" << endl;
+}
+
+int *InitArray(int n)
+{
+    int *a = new int[n];
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Enter the " << i+1 << "'s number" << endl;
+        int b;
+        cin >> b;
+        a[i] = b;
+    }
+    return a;
+}
+
+void DisplayArray(int *a, int n)
+{
+    for (int i = 0; i < n; i++)
+    cout << a[i] << " ";
+}
+
+int FindKrat(int *a, int n, int *newarr, int *delarr)
+{
+    int mini=a[0];
+    for(int i=1; i<n; i++)
+    {
+        if (a[i] < mini)
+        mini = a[i];
+    }
+for(int i=0; i < n-1; i++)
+    {
+        if(a[i]%mini==0)
+            newarr[t++] = a[i+1];   //kratno min number - Arr 1
+        else
+            delarr[f++] = a[i];     //not kratno min number - Arr 2
+    }
+    return 0;
+}
+
+void Sort (int *newarr, int t)
+{
+int temp;
+for (int i = 0; i < t - 1; i++)
+    {
+        for (int j = 0; j < t - i - 1; j++)
+        {
+            if (newarr[j] > newarr[j + 1])
+            {
+                temp = newarr[j];
+                newarr[j] = newarr[j + 1];
+                newarr[j + 1] = temp;
+            }
+        }
+    }
+}
+
